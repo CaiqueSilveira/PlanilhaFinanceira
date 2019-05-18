@@ -1,0 +1,118 @@
+﻿@using WebApplication1.Models
+@{
+    ViewBag.Title = "Index";
+}
+@{
+    var Lista = ViewBag.Lista;
+    float TotalDespesas = ViewBag.TotalDespesas;
+    float TotalReceitas = ViewBag.TotalReceitas;
+}
+<h2>EXTRATO</h2>
+<br />
+<form asp-controller="Extrato" asp-action="Index" method="get">
+    <div class="row">
+        <div class="col-md-4">
+            Data de início: @Html.TextBox("pesq_inicio")
+        </div>
+        &nbsp;
+        <div class="col-md-4">
+            Data de fim: @Html.TextBox("pesq_fim")
+        </div>
+        <br />
+        <br />
+        <div class="col-md-10">
+            Credito
+            @Html.RadioButton("credito", "1")
+            Débito
+            @Html.RadioButton("debito", "2")
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <input type="submit" value="Pesquisar" style="margin-left:0%; margin-top:2%;" />
+        </div>
+        <div class="col-md-4">
+            <button type="button" class="btn-warning" onclick="CriaPDF()">Exportar em PDF <img src="https://img.icons8.com/material/24/000000/export-pdf.png"></button>
+        </div>
+    </div>
+</form>
+<div id="tabela">
+    <h4>Extrato</h4>
+    <table class="table">
+        <tr style="font-size: 18px">
+            <th>Total de Receitas: @Html.Raw(String.Format("R$ {0:n2}", TotalReceitas))</th>
+            <th>Total de Despesas: @Html.Raw(String.Format("R$ {0:n2}", TotalDespesas))</th>
+            <th>Saldo: @Html.Raw(String.Format("R$ {0:n2}", TotalReceitas - TotalDespesas))</th>
+        </tr>
+    </table>
+    <table class="table">
+        <tr>
+            <th>Valor</th>
+            <th>Tipo/Nome</th>
+            <th>Data de Realização</th>
+            <th>Data de Vencimento</th>
+            <th>Pagamento</th>
+            <th>Saldo Parcial</th>
+        </tr>
+        @foreach (var item in Lista)
+        {
+            String color = "";
+            if (item.Tipo == 1)
+            {
+                color = "Red";
+            }
+            else
+            {
+                color = "Blue";
+            }
+            <tr style="color: @color">
+                <td>
+                    @Html.Raw(String.Format("R$ {0:n2}", @item.Valor))
+                </td>
+                <td>
+                    @item.Definicao
+                </td>
+                <td>
+                    @item.DataRealizacao.ToString("dd/MM/yyyy")
+                </td>
+                <td>
+                    @item.DataVencimento.ToString("dd/MM/yyyy")
+                </td>
+                <td>
+                    @item.Pagamento
+                </td>
+                <td>
+                    @if (item.Tipo == 1)
+                    {
+                        @item.SaldoPar
+                    }
+                    else
+                    {
+                        @item.SaldoParcial
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+<script>
+    function CriaPDF() {
+        var minhaTabela = document.getElementById('tabela').innerHTML;
+        var style = "<style>";
+        style = style + "table {width: 100%;font: 20px Calibri;}";
+        style = style + "table, th, td {border: solid 1px #DDD; border-collapse: collapse;";
+        style = style + "padding: 2px 3px;text-align: center;}";
+        style = style + "</style>";
+        // CRIA UM OBJETO WINDOW
+        var win = window.open('', '', 'height=700,width=700');
+        win.document.write('<html><head>');
+        win.document.write('<title>Extrato</title>');// <title> CABEÇALHO DO PDF.
+        win.document.write(style);// INCLUI UM ESTILO NA TAB HEAD
+        win.document.write('</head>');
+        win.document.write('<body>');
+        win.document.write(minhaTabela);// O CONTEUDO DA TABELA DENTRO DA TAG BODY
+        win.document.write('</body></html>');
+        win.document.close();// FECHA A JANELA
+        win.print();
+    }
+</script>
