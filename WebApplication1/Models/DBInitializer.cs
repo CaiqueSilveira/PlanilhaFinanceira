@@ -64,7 +64,7 @@ namespace WebApplication1.Models
                         IdTipoDespesa = tipoDespesas[0].Id,
                         TipoDespesa = tipoDespesas[0],
                         SaldoPar = 400,
-                        Valor = 45, DataRealizacao = new DateTime(2019, 01, 01) });
+                        Valor = 45, DataRealizacao = new DateTime(2019, 01, 05) });
 
                     despesas.Add(new Despesa() {
                         NomeDespesa = "Médico",
@@ -82,7 +82,7 @@ namespace WebApplication1.Models
                         TipoDespesa = tipoDespesas[1],
                         Valor = 900,
                         SaldoPar = 2000,
-                        DataRealizacao = new DateTime(2019, 01, 30) });
+                        DataRealizacao = new DateTime(2019, 01, 10) });
 
                     context.Despesas.AddRange(despesas);
                     context.SaveChanges();
@@ -105,7 +105,7 @@ namespace WebApplication1.Models
                     receitas.Add(new Receita()
                     {
                         TipoReceita = TipoReceita.Indenizacao,
-                        DataRecebimento = new DateTime(2019, 01, 30),
+                        DataRecebimento = new DateTime(2019, 01, 19),
                         FormaRecebimento = FormaRecebimento.Cartao,
                         NumeroParcelas = 6,
                         Parcelamento = Parcelamento.Parcelado,

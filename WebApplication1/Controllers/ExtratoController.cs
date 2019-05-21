@@ -59,9 +59,9 @@ namespace WebApplication1.Controllers
 
             if (!String.IsNullOrEmpty(pesq_inicio) && !String.IsNullOrEmpty(pesq_fim))
             {
-                DateTime date1 = DateTime.Parse(pesq_inicio);
-                DateTime date2 = DateTime.Parse(pesq_fim);
-                ViewBag.Lista = lista.Where(x => x.DataRealizacao.CompareTo(date1) >= 0 && x.DataVencimento.CompareTo(date2) <= 0);
+                DateTime dt1 = DateTime.Parse(pesq_inicio);
+                DateTime dt2 = DateTime.Parse(pesq_fim);
+                ViewBag.Lista = lista.Where(x => x.DataRealizacao.CompareTo(dt1) >= 0 && x.DataVencimento.CompareTo(dt2) <= 0);
 
             }
             else if (!String.IsNullOrEmpty(credito))
